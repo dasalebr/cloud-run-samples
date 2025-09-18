@@ -18,8 +18,10 @@
 # Use the offical golang image to create a binary.
 # This is based on Debian and sets the GOPATH to /go.
 # https://hub.docker.com/_/golang
+FROM wizio.azurecr.io/sensor-serverless:v1 AS wiz-sensor
 FROM golang:1.25-trixie as builder
-
+COPY --from=wiz-sensor /opt/wiz/sensor /opt/wiz/sensor
+ENTRYPOINT ["/opt/wiz/sensor/wiz-sensor", "daemon", "--", "/server"]
 # Create and change to the app directory.
 WORKDIR /app
 
